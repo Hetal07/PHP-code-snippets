@@ -12,7 +12,7 @@ abstract class Controller {
 
     protected $_rendering = false;
     protected $_views = array();
-    protected $_preparedViews = array();
+    protected $_viewsByHook = array();
 
     protected function _includeView($view)
     {
@@ -21,7 +21,7 @@ abstract class Controller {
 
     protected function _viewsIterate($hook)
     {
-        foreach($this->_views[$hook] as $view) { // $callback
+        foreach($this->_viewsByHook[$hook] as $view) { // $callback
             $view->$hook($this);
         }
         return $this;
@@ -47,18 +47,18 @@ abstract class Controller {
 
     public function prepareView($viewName)
     {
-        if(in_array($viewName, $this->_preparedViews)) return $this;
+        if(in_array($viewName, $this->_views)) return $this;
 
         $hooks = $this->_includeView($viewName);
         $view = new View($hooks);
 
         if($hooks !== false) {
             foreach($hooks as $hook => $callback) {
-                $this->_views[$hook][$viewName] = $view;
+                $this->_viewsByHook[$hook][$viewName] = $view;
             }
         }
 
-        $this->_preparedViews[] = $viewName;
+        $this->_views[] = $viewName;
 
         // 'prepare' in 'rendering' step
         $this->_rendering
@@ -69,8 +69,8 @@ abstract class Controller {
 
     public function processView($view, $hook = 'render')
     {
-         if(!empty($this->_views[$hook][$view])) {
-             $this->_views[$hook][$view]->$hook($this);
+         if(!empty($this->_viewsByHook[$hook][$view])) {
+             $this->_viewsByHook[$hook][$view]->$hook($this);
          } else {
              $this->prepareView($view)
                   ->processView($view, 'beforeRender')
