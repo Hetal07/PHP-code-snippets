@@ -1,3 +1,4 @@
+```
 -----------------------------------------------------------------------------------------------------------
 [time:000007674] [memory:000035444] {main} (/var/www/PHP-code-snippets/Views-preprocessing/index.php)
 [time:000003803] [memory:000016020]  └── Controller::prepareViews (/var/www/PHP-code-snippets/Views-preprocessing/index.php)
@@ -61,3 +62,4 @@
 [time:000000021] [memory:000000000]  |    |    |    |    └── {closure} (/var/www/PHP-code-snippets/Views-preprocessing/views/demo_1.phtml)
 [time:000000040] [memory:000000000]  └── forp_end (/var/www/PHP-code-snippets/Views-preprocessing/index.php)
 -----------------------------------------------------------------------------------------------------------
+```
