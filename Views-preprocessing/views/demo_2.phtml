@@ -1,0 +1,12 @@
+<?php
+return array(
+    'beforeRender' => function($controller) {
+        echo "-> beforeRender demo_2<br>";
+    },
+    'render' => function($controller) {
+        echo "-> Render demo_2<br>";
+    },
+    'afterRender' => function($controller) {
+        echo "-> afterRender demo_2<br>";
+    }
+);

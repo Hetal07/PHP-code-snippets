@@ -1,0 +1,13 @@
+<?php
+return array(
+    'beforeRender' => function($controller) {
+        echo "-> beforeRender demo_1<br>";
+    },
+    'render' => function($controller) {
+        $controller->processView('demo_2');
+        echo "-> Render demo_1<br>";
+    },
+    'afterRender' => function($controller) {
+        echo "-> afterRender demo_1<br>";
+    }
+);
