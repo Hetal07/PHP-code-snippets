@@ -37,48 +37,6 @@ abstract class Controller {
         return $this;
     }
 
-    public function prepareViews($views)
-    {
-        foreach($views as $view) {
-            $this->prepareView($view);
-        }
-        return $this;
-    }
-
-    public function prepareView($viewName)
-    {
-        if(in_array($viewName, $this->_views)) return $this;
-
-        $hooks = $this->_includeView($viewName);
-        $view = new View($hooks);
-
-        if($hooks !== false) {
-            foreach($hooks as $hook => $callback) {
-                $this->_viewsByHook[$hook][$viewName] = $view;
-            }
-        }
-
-        $this->_views[] = $viewName;
-
-        // 'prepare' in 'rendering' step
-        $this->_rendering
-        && $this->processView($viewName, 'beforeRender');
-
-        return $this;
-    }
-
-    public function processView($view, $hook = 'render')
-    {
-         if(!empty($this->_viewsByHook[$hook][$view])) {
-             $this->_viewsByHook[$hook][$view]->$hook($this);
-         } else {
-             $this->prepareView($view)
-                  ->processView($view, 'beforeRender')
-                  ->processView($view);
-         }
-        return $this;
-    }
-
     public function render() {
 
         // render step
@@ -97,6 +55,45 @@ abstract class Controller {
             // processing afterRender callbacks
              ->_viewsIterate('afterRender');
 
+        return $this;
+    }
+
+    public function prepareView($viewName)
+    {
+        if(array_key_exists($viewName, $this->_views)) return $this;
+
+        $this->_views[$viewName] = new View($hooks = $this->_includeView($viewName));
+        if($hooks !== false) {
+            foreach($hooks as $hook => $callback) {
+                $this->_viewsByHook[$hook][$viewName] = $this->_views[$viewName];
+            }
+        }
+
+
+        // 'prepare' in 'rendering' step
+        $this->_rendering
+        && $this->processView($viewName, 'beforeRender');
+
+        return $this;
+    }
+
+    public function prepareViews($views)
+    {
+        foreach($views as $view) {
+            $this->prepareView($view);
+        }
+        return $this;
+    }
+
+    public function processView($view, $hook = 'render')
+    {
+         if(!empty($this->_viewsByHook[$hook][$view])) {
+             $this->_viewsByHook[$hook][$view]->$hook($this);
+         } else {
+             $this->prepareView($view)
+                  ->processView($view, 'beforeRender')
+                  ->processView($view);
+         }
         return $this;
     }
 
