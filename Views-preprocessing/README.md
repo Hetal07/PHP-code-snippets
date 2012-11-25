@@ -1,4 +1,15 @@
 ```
+-> beforeRender demo_1
+-> beforeRender demo_0
+-> beforeRender demo_2
+-> Render demo_0
+-> Render demo_2
+-> Render demo_1
+-> Render demo_0
+-> afterRender demo_0
+-> afterRender demo_2
+-> afterRender demo_1
+
 -----------------------------------------------------------------------------------------------------------
 [time:000007674] [memory:000035444] {main} (/var/www/PHP-code-snippets/Views-preprocessing/index.php)
 [time:000003803] [memory:000016020]  └── Controller::prepareViews (/var/www/PHP-code-snippets/Views-preprocessing/index.php)
